@@ -30,7 +30,13 @@ pipeline {
                 sh "docker push 923954127216.dkr.ecr.us-east-2.amazonaws.com/manojrepository:latest"
             }
         }
-        
+        stage ( 'K8S Deploy ') {
+            steps {
+                withKubeConfig(caCertificate: '', clusterName: '', contextName: '', credentialsId: 'K8S', namespace: '', serverUrl: '') {
+                    sh "kubectl apply -f eks-k8s-deployment.yaml"
+                }
+            }
+        }
         
     }
 }    
