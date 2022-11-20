@@ -1,8 +1,11 @@
 pipeline {
+    agent any
     tools {
         maven "Maven3"
     }
-    agent any
+    environment {
+        registry = "923954127216.dkr.ecr.us-east-2.amazonaws.com/manojrepository"
+    }
     stages {
         stage ( 'Git Checkout') {
             steps {
@@ -12,6 +15,13 @@ pipeline {
         stage ( ' Build ') {
             steps {
                 sh 'mvn clean install'
+            }
+        }
+        stage ( 'Build Docker Image') {
+            steps {
+                script {
+                    docker build registry
+                }
             }
         }
         
