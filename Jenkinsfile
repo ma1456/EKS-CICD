@@ -12,7 +12,7 @@ pipeline {
             checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/ma1456/EKS-CICD.git']]])
            }
         }
-        stage ( ' Build ') {
+        stage ( ' Build Jar') {
             steps {
                 sh 'mvn clean install'
             }
@@ -24,6 +24,13 @@ pipeline {
                 }
             }
         }
+        stage (' Push into ECR') {
+            steps{
+                sh "aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 923954127216.dkr.ecr.us-east-2.amazonaws.com"
+                sh "docker push 923954127216.dkr.ecr.us-east-2.amazonaws.com/manojrepository:latest"
+            }
+        }
+        
         
     }
 }    
