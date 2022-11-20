@@ -1,4 +1,7 @@
 pipeline {
+    tools {
+        maven "Maven3"
+    }
     agent any
     stages {
         stage ( 'Git Checkout') {
@@ -8,7 +11,6 @@ pipeline {
         }
         stage ( ' Build ') {
             steps {
-                sh 'mvn clean package'
                 sh 'mvn clean install'
             }
         }
